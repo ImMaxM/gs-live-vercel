@@ -61,18 +61,6 @@ const config = {
         key: "Permissions-Policy",
         value: "camera=(), microphone=(), geolocation=()",
       },
-      {
-        key: "Content-Security-Policy",
-        value: [
-          "default-src 'self'",
-          "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
-          "style-src 'self' 'unsafe-inline'",
-          "img-src 'self' data: https://cdn.discordapp.com https://content.motorsportstats.com",
-          "connect-src 'self' https://discord.com https://api.motorsportstats.com wss:",
-          "frame-ancestors 'self' https://discord.com",
-          "font-src 'self' https://fonts.gstatic.com",
-        ].join("; "),
-      },
     ];
     // Add HSTS only in production
     if (process.env.NODE_ENV === "production") {
