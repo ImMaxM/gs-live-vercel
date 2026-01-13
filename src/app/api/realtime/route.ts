@@ -1,9 +1,24 @@
 import { getF1Client } from "~/lib/f1/client";
 import type { LiveTimingsPayload } from "../../../../payload";
 import pako from "pako";
+import {
+  sseClientsGauge,
+  sseConnectionsTotal,
+  sseMessagesSent,
+  f1ConnectionStatus,
+  f1EventsReceived,
+} from "~/lib/metrics";
 
 export async function GET(): Promise<Response> {
   const client = getF1Client();
+
+  // Track new connection
+  sseClientsGauge.inc();
+  sseConnectionsTotal.inc();
+
+  // Cleanup state tored in closure for access from cancel callback
+  let cleanupFn: (() => void) | null = null;
+  let isCleanedUp = false;
 
   const stream = new ReadableStream({
     start(controller) {
@@ -11,6 +26,8 @@ export async function GET(): Promise<Response> {
 
       // helper to send SSE formatted data with compression
       const sendEvent = (event: string, data: unknown) => {
+        if (isCleanedUp) return;
+
         // Compress JSON data using deflate, then base64 encode for SSE transport
         const jsonStr = JSON.stringify(data);
         const compressed = pako.deflate(jsonStr);
@@ -19,6 +36,7 @@ export async function GET(): Promise<Response> {
         const payload = `event: ${event}\ndata: ${base64}\n\n`;
         try {
           controller.enqueue(encoder.encode(payload));
+          sseMessagesSent.inc({ event_type: event });
         } catch {
           // stream closed, ignore
         }
@@ -27,6 +45,7 @@ export async function GET(): Promise<Response> {
       // Send initial connection status and cached data
       // const cachedData = client.getCachedData();
       const isConnected = client.getConnectionStatus();
+      f1ConnectionStatus.set(isConnected ? 1 : 0);
 
       sendEvent("status", {
         connected: isConnected,
@@ -35,6 +54,8 @@ export async function GET(): Promise<Response> {
 
       // Subscribe to F1 client events
       const unsubscribe = client.subscribe((event) => {
+        f1EventsReceived.inc({ event_type: event.type });
+
         switch (event.type) {
           case "payload":
             sendEvent("payload", {
@@ -43,12 +64,14 @@ export async function GET(): Promise<Response> {
             });
             break;
           case "connected":
+            f1ConnectionStatus.set(1);
             sendEvent("status", {
               connected: true,
               timestamp: event.timestamp,
             });
             break;
           case "disconnected":
+            f1ConnectionStatus.set(0);
             sendEvent("status", {
               connected: false,
               timestamp: event.timestamp,
@@ -71,18 +94,18 @@ export async function GET(): Promise<Response> {
         sendEvent("heartbeat", { timestamp: Date.now() });
       }, 30000);
 
-      // Cleanup when client disconnects
-      const cleanup = () => {
+      // Store cleanup function in closure
+      cleanupFn = () => {
+        if (isCleanedUp) return;
+        isCleanedUp = true;
         clearInterval(heartbeatInterval);
         unsubscribe();
+        sseClientsGauge.dec();
       };
-
-      // triggered when the client closes the connection
-      const originalCancel = controller.close.bind(controller);
-      controller.close = () => {
-        cleanup();
-        originalCancel();
-      };
+    },
+    cancel() {
+      // Called when client disconnects (refresh, close tab, navigate away)
+      if (cleanupFn) cleanupFn();
     },
   });
 

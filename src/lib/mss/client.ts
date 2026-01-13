@@ -84,7 +84,7 @@ class MSSClient {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "X-Api-Key": env.MSS_API_KEY as string,
+        "X-Api-Key": env.MSS_API_KEY,
         Accept: "application/json",
       },
     });
