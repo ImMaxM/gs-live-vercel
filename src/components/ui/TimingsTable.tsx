@@ -255,36 +255,151 @@ export function TimingsTable() {
   const { speedUnit } = useSettings();
   const drivers: DriverTelemetry[] = payload?.drivers ?? [];
 
-  if (drivers.length === 0) {
+  if (drivers.length < 1) {
     // Skeleton loading state for better LCP
     return (
-      <div className="min-w-[950px]">
-        {/* Skeleton Rows */}
-        <div className="flex flex-col">
-          {Array.from({ length: 22 }).map((_, i) => (
-            <div
-              key={i}
-              className={`grid ${GRID_TEMPLATE} h-10 items-center border-b border-[#2a2a2a] pl-4`}
-            >
-              <div className="h-5 w-6 animate-pulse rounded bg-[#333]" />
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 animate-pulse rounded-full bg-[#333]" />
-                <div className="h-4 w-12 animate-pulse rounded bg-[#333]" />
-                <div className="ml-6 h-4 w-4 animate-pulse rounded bg-[#333]" />
+      <div className="w-full">
+        <div className="relative flex w-full">
+          <div className="relative flex-1">
+            <div className="flex flex-col">
+              {/* Top spacer with lines */}
+              <div className={`grid ${GRID_TEMPLATE} h-2`}>
+                <div className={`${COLUMN_WIDTHS.position} h-full`} />
+                <div
+                  className={`${COLUMN_WIDTHS.driver} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.gap} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.interval} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.lastLap} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.fastestLap} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.avgSpeed} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.pit} border-border h-full border-l`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.tyres} border-border h-full border-l`}
+                />
               </div>
-              <div className="ml-12 h-4 w-16 animate-pulse rounded bg-[#333]" />
-              <div className="ml-12 h-4 w-14 animate-pulse rounded bg-[#333]" />
-              <div className="ml-12 h-4 w-16 animate-pulse rounded bg-[#333]" />
-              <div className="ml-12 h-4 w-16 animate-pulse rounded bg-[#333]" />
-              <div className="ml-12 h-4 w-12 animate-pulse rounded bg-[#333]" />
-              <div className="ml-2 h-4 w-8 animate-pulse rounded bg-[#333]" />
-              <div className="ml-2 flex gap-1">
-                <div className="h-6 w-6 animate-pulse rounded bg-[#333]" />
-                <div className="h-6 w-12 animate-pulse rounded bg-[#333]" />
-                <div className="h-3 w-100 animate-pulse self-center rounded bg-[#333]" />
+
+              {/* Skeleton Header */}
+              <div
+                className={`grid ${GRID_TEMPLATE} text-header h-6 items-center text-center text-[10px] tracking-wider uppercase`}
+              >
+                <div
+                  className={`${COLUMN_WIDTHS.position} flex h-full items-center justify-center font-medium`}
+                />
+                <div
+                  className={`${COLUMN_WIDTHS.driver} border-border flex h-full items-center justify-center border-l px-3 font-medium`}
+                >
+                  Driver
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.gap} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Gap
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.interval} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Interval
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.lastLap} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Last Lap
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.fastestLap} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Fastest Lap
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.avgSpeed} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Avg Speed
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.pit} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Pit
+                </div>
+                <div
+                  className={`${COLUMN_WIDTHS.tyres} border-border flex h-full items-center justify-center border-l font-medium`}
+                >
+                  Tyres
+                </div>
               </div>
+
+              {/* Skeleton Rows */}
+              {Array.from({ length: 22 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`grid ${GRID_TEMPLATE} h-10 items-center`}
+                >
+                  {/* Position */}
+                  <div className="flex items-center justify-center self-stretch">
+                    <div className="h-5 w-6 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Driver */}
+                  <div className="border-border flex items-center justify-between self-stretch border-l px-3">
+                    <div className="flex items-center gap-2">
+                      <div className="h-6 w-6 animate-pulse rounded-full bg-[#333]" />
+                      <div className="h-4 w-10 animate-pulse rounded bg-[#333]" />
+                    </div>
+                    <div className="h-3 w-6 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Gap */}
+                  <div className="border-border flex items-center justify-center self-stretch border-l px-3">
+                    <div className="h-4 w-12 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Interval */}
+                  <div className="border-border flex items-center justify-center self-stretch border-l px-3">
+                    <div className="h-4 w-10 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Last Lap */}
+                  <div className="border-border flex items-center justify-center self-stretch border-l px-3">
+                    <div className="h-4 w-14 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Fastest Lap */}
+                  <div className="border-border flex items-center justify-center self-stretch border-l px-3">
+                    <div className="h-4 w-14 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Avg Speed */}
+                  <div className="border-border flex items-center justify-center self-stretch border-l px-3">
+                    <div className="h-4 w-16 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Pit */}
+                  <div className="border-border flex items-center justify-center self-stretch border-l px-3">
+                    <div className="h-4 w-6 animate-pulse rounded bg-[#333]" />
+                  </div>
+
+                  {/* Tyres */}
+                  <div className="border-border flex items-center justify-center gap-2 self-stretch border-l px-3">
+                    <div className="h-5 w-5 animate-pulse rounded bg-[#333]" />
+                    <div className="h-5 w-10 animate-pulse rounded bg-[#333]" />
+                    <div className="h-2 w-80 animate-pulse rounded-full bg-[#333]" />
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     );

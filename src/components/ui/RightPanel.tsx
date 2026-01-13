@@ -5,7 +5,7 @@ import { RaceControl } from "./RaceControl";
 
 export function RightPanel() {
   return (
-    <div className="bg-background border-border flex h-full flex-col border-l">
+    <div className="bg-background border-border flex h-full flex-col border lg:border-y-0 lg:border-r-0">
       {/* Top: Crowd Engineer */}
       <CrowdEngineer />
 
