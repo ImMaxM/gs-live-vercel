@@ -36,11 +36,10 @@ const STATUS_STYLES: Record<
 export function StatusBar() {
   const { payload } = useF1Live();
 
-  const flagStatus = payload?.trackStatus?.flagStatus ?? "green";
-  const message = payload?.trackStatus?.message;
+  const flagStatus = payload?.flagStatus ?? "green";
 
   const style = STATUS_STYLES[flagStatus] ?? STATUS_STYLES.green!;
-  const displayMessage = message ?? style.defaultMessage;
+  const displayMessage = style.defaultMessage;
 
   return (
     <div

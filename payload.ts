@@ -73,9 +73,8 @@ export interface DriverTelemetry {
   }[];
 
   // retirement data
-  retirement: {
-    
-  }
+  // retirement: {
+  // }
 }
 
 export interface RaceControlMessage {

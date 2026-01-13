@@ -29,7 +29,7 @@ export function transformToPayload(
   // Determine session status
   const sessionStatus = mssData
     ? mapSessionState(mssData.sessionState)
-    : "inactive";
+    : "complete";
 
   const payload: LiveTimingsPayload = {
     session: {
@@ -57,7 +57,7 @@ export function transformToPayload(
       humidityPercent: weather?.Humidity ? parseFloat(weather.Humidity) : 0,
       pressureHpa: weather?.Pressure ? parseFloat(weather.Pressure) : 0,
     },
-    trackStatus: determineTrackStatus(mssData?.raceDetail, mssData?.lap ?? 0),
+    flagStatus: determineFlagStatus(mssData?.raceDetail, mssData?.lap ?? 0),
     drivers,
     raceControlMessages: messages,
   };
@@ -65,44 +65,38 @@ export function transformToPayload(
   return payload;
 }
 
-function determineTrackStatus(
+function determineFlagStatus(
   raceDetail:
     | { safetyCar: number[]; virtualSafetyCar: number[]; redFlag: number[] }
     | null
     | undefined,
   currentLap: number,
-): LiveTimingsPayload["trackStatus"] {
+): LiveTimingsPayload["flagStatus"] {
   if (!raceDetail) {
-    return {
-      message: "TRACK CLEAR — NO CURRENT OBSTRUCTIONS",
-      flagStatus: "green",
-    };
+    return "green";
   }
 
   // Check if current lap has any flags (check current lap and also if we're still under that condition)
   // Red flag takes priority
   if (raceDetail.redFlag.includes(currentLap)) {
-    return { message: "RED FLAG — SESSION SUSPENDED", flagStatus: "red" };
+    return "red";
   }
 
   // Safety car
   if (raceDetail.safetyCar.includes(currentLap)) {
-    return { message: "SAFETY CAR DEPLOYED", flagStatus: "sc" };
+    return "sc";
   }
 
   // Virtual safety car
   if (raceDetail.virtualSafetyCar.includes(currentLap)) {
-    return { message: "VIRTUAL SAFETY CAR", flagStatus: "vsc" };
+    return "vsc";
   }
 
   // Default: green flag
-  return {
-    message: "TRACK CLEAR — NO CURRENT OBSTRUCTIONS",
-    flagStatus: "green",
-  };
+  return "green";
 }
 
-function mapSessionState(state: string): "active" | "inactive" | "finished" {
+function mapSessionState(state: string): "active" | "complete" | "finished" {
   switch (state.toLowerCase()) {
     case "running":
     case "live":
@@ -112,7 +106,7 @@ function mapSessionState(state: string): "active" | "inactive" | "finished" {
     case "finished":
       return "finished";
     default:
-      return "inactive";
+      return "complete";
   }
 }
 

@@ -18,7 +18,7 @@ export function useSoundNotifications() {
     // Skip first render to avoid sounds on initial load
     if (isFirstRender.current) {
       if (payload) {
-        prevFlagStatus.current = payload.trackStatus?.flagStatus ?? "green";
+        prevFlagStatus.current = payload.flagStatus ?? "green";
         prevMessageCount.current = payload.raceControlMessages?.length ?? 0;
         isFirstRender.current = false;
       }
@@ -27,13 +27,12 @@ export function useSoundNotifications() {
 
     if (!soundEnabled || !payload) return;
 
-    const currentFlagStatus = payload.trackStatus?.flagStatus ?? "green";
+    const currentFlagStatus = payload.flagStatus ?? "green";
     const currentMessageCount = payload.raceControlMessages?.length ?? 0;
 
     // Check for flag status changes
     if (prevFlagStatus.current !== currentFlagStatus) {
       switch (currentFlagStatus) {
-        case "yellow":
         case "sc":
         case "vsc":
           playSound("yellow");

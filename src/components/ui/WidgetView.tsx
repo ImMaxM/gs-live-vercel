@@ -129,19 +129,41 @@ export function WidgetView() {
   const progressPercent = totalLaps > 0 ? (currentLap / totalLaps) * 100 : 0;
 
   // Track Status
-  const flagStatus = payload?.trackStatus?.flagStatus ?? "green";
-  const trackStatus =
-    payload?.trackStatus?.message ?? "TRACK CLEAR — NO CURRENT OBSTRUCTIONS";
+  const flagStatus = payload?.flagStatus ?? "green";
 
   // Status bar styles based on flag
-  const statusStyles: Record<string, { bg: string; text: string }> = {
-    green: { bg: "bg-green-flag", text: "text-white" },
-    yellow: { bg: "bg-yellow-500", text: "text-black" },
-    red: { bg: "bg-red-600", text: "text-white" },
-    sc: { bg: "bg-amber-500", text: "text-black" },
-    vsc: { bg: "bg-amber-400", text: "text-black" },
+  const statusStyles: Record<
+    string,
+    { bg: string; text: string; message: string }
+  > = {
+    green: {
+      bg: "bg-green-flag",
+      text: "text-white",
+      message: "TRACK CLEAR — NO CURRENT OBSTRUCTIONS",
+    },
+    yellow: {
+      bg: "bg-yellow-500",
+      text: "text-black",
+      message: "YELLOW FLAG — CAUTION",
+    },
+    red: {
+      bg: "bg-red-600",
+      text: "text-white",
+      message: "RED FLAG — SESSION STOPPED",
+    },
+    sc: {
+      bg: "bg-amber-500",
+      text: "text-black",
+      message: "SAFETY CAR DEPLOYED",
+    },
+    vsc: {
+      bg: "bg-amber-400",
+      text: "text-black",
+      message: "VIRTUAL SAFETY CAR",
+    },
   };
   const statusStyle = statusStyles[flagStatus] ?? statusStyles.green!;
+  const trackStatus = statusStyle.message;
 
   return (
     <div className="bg-background flex h-screen w-screen flex-col overflow-hidden text-white">
