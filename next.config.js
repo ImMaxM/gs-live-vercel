@@ -7,11 +7,6 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  // Enable CSS optimization for smaller bundles
-  experimental: {
-    optimizeCss: true,
-  },
-
   allowedDevOrigins: [
     "1342576900647817309.discordsays.com",
     "mac.han-tailor.ts.net",
