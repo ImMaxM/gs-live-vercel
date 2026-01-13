@@ -78,8 +78,8 @@ class MSSClient {
   async fetchLiveStandings(
     sessionUuid: string,
   ): Promise<MSSLiveStandingsResponse | null> {
-    // const url = `${MSS_API_BASE}/liveStandings/${sessionUuid}`;
-    const url = "http://localhost:3035/live";
+    const url = `${MSS_API_BASE}/liveStandings/${sessionUuid}`;
+    // const url = "http://localhost:3035/live";
 
     const response = await fetch(url, {
       method: "GET",
