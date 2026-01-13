@@ -1,11 +1,15 @@
 import "../styles/globals.css";
 
-import { type Metadata } from "next";
+import { type Metadata, type Viewport } from "next";
 import { Saira } from "next/font/google";
 import { F1LiveProvider } from "~/components/providers/F1LiveProvider";
 import { SettingsProvider } from "~/components/providers/SettingsProvider";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
+
+export const viewport: Viewport = {
+  themeColor: "#DF3A39",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://live.gridscout.xyz"),
@@ -28,10 +32,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://live.gridscout.xyz",
-    siteName: "GridScout Live",
+    siteName: "GridScout",
     title: "GridScout Live",
     description:
-      "Real-time F1 live ti ming dashboard. Experience Formula 1 race data with live lap times, driver positions and tyre stints right within your browser",
+      "Real-time F1 live timing dashboard. Experience Formula 1 race data with live lap times, driver positions and tyre stints right within your browser",
     images: [
       {
         url: "/assets/hero.png",
