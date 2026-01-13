@@ -4,7 +4,7 @@ import type { MSSLiveStandingsResponse } from "./types";
 const MSS_API_BASE = "https://api.motorsportstats.com/core/2.0.0";
 
 // Hardcoded session UUID for now will be dynamic later
-const CURRENT_SESSION_UUID = "109f6482-722e-4722-8336-c5fa90546894";
+const CURRENT_SESSION_UUID = "6310beca-dcc5-4be7-95b3-f5a9d33f27b7";
 
 export interface MSSClientOptions {
   sessionUuid?: string;
