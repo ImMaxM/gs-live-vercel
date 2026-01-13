@@ -2,7 +2,7 @@ export interface LiveTimingsPayload {
   // Session & Event Info
   session: {
     name: string; // e.g., "Race Session"
-    status: "active" | "inactive" | "finished";
+    status: "active" | "finished" | "complete";
     lap: number; // e.g., 52
     lapTotal: number; // e.g., 70
   };
@@ -28,11 +28,7 @@ export interface LiveTimingsPayload {
     pressureHpa: number; // 996.4
   };
 
-  // Track Status (Top Green Bar)
-  trackStatus: {
-    message: string; // e.g., "TRACK CLEAR - NO CURRENT OBSTRUCTIONS"
-    flagStatus: "green" | "yellow" | "red" | "sc" | "vsc";
-  };
+  flagStatus: "green" | "sc" | "vsc" | "red";
 
   // Main Leaderboard Data
   drivers: DriverTelemetry[];
@@ -75,12 +71,17 @@ export interface DriverTelemetry {
     laps: number; // e.g., 5
     wear?: string; // "u" for Worn, "n" for Normal/New
   }[];
+
+  // retirement data
+  retirement: {
+    
+  }
 }
 
 export interface RaceControlMessage {
   id: string; // Unique ID for React lists/keys
-  utc: string; // "15:21:36"
+  utc: string; // "2026-01-13T20:26:36.000Z"
   lap: number; // 52
-  category: string; // "FIA STEWARDS", "Car Event", etc.
-  message: string; // The actual text content
+  category: string; // Other, 
+  message: string; // The text content
 }
