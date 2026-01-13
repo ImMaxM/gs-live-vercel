@@ -3,7 +3,6 @@
  * for Docker builds.
  */
 import "./src/env.js";
-import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -91,12 +90,15 @@ const config = {
   },
 };
 
-// Setup Sentry with proper ES Module syntax
-export default withSentryConfig(config, {
+// Injected content via Sentry wizard below
+
+const { withSentryConfig } = require("@sentry/nextjs");
+
+module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "gridscout",
+  org: "wearexalt-inc",
   project: "gridscout-live",
 
   // Only print logs for uploading source maps in CI
@@ -114,9 +116,17 @@ export default withSentryConfig(config, {
   // side errors will fail.
   tunnelRoute: "/monitoring",
 
-  // Tree-shaking options for reducing bundle size
-  disableLogger: true,
+  webpack: {
+    // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
+    // See the following for more information:
+    // https://docs.sentry.io/product/crons/
+    // https://vercel.com/docs/cron-jobs
+    automaticVercelMonitors: true,
 
-  // Automatically monitor Vercel Cron jobs
-  automaticVercelMonitors: true,
+    // Tree-shaking options for reducing bundle size
+    treeshake: {
+      // Automatically tree-shake Sentry logger statements to reduce bundle size
+      removeDebugLogging: true,
+    },
+  },
 });
