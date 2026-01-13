@@ -47,5 +47,10 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.40.0"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not op_mini all"
+  ]
 }

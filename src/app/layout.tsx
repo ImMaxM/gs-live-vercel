@@ -66,15 +66,6 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${saira.variable}`}>
-      <head>
-        {/* Preconnect to external origins for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-      </head>
       <body className="bg-background">
         <SettingsProvider>
           <F1LiveProvider>{children}</F1LiveProvider>

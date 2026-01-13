@@ -1,14 +1,36 @@
 "use client";
 
-import { DiscordActivity } from "~/components/providers/DiscordActivity";
+import dynamic from "next/dynamic";
 import { Header } from "~/components/layout/Header";
 import { StatusBar } from "~/components/ui/StatusBar";
-import { TimingsTable } from "~/components/ui/TimingsTable";
-import { WidgetView } from "~/components/ui/WidgetView";
-import { RightPanel } from "~/components/ui/RightPanel";
 import { SoundNotifications } from "~/components/SoundNotifications";
 import { useF1Live } from "~/components/providers/F1LiveProvider";
 import { useEffect, useState } from "react";
+import type { Auth } from "~/components/providers/DiscordActivity";
+
+// Dynamic imports for heavy components - loads on-demand
+const DiscordActivity = dynamic(
+  () =>
+    import("~/components/providers/DiscordActivity").then(
+      (mod) => mod.DiscordActivity,
+    ),
+  { ssr: false },
+);
+
+const TimingsTable = dynamic(
+  () => import("~/components/ui/TimingsTable").then((mod) => mod.TimingsTable),
+  { ssr: false },
+);
+
+const RightPanel = dynamic(
+  () => import("~/components/ui/RightPanel").then((mod) => mod.RightPanel),
+  { ssr: false },
+);
+
+const WidgetView = dynamic(
+  () => import("~/components/ui/WidgetView").then((mod) => mod.WidgetView),
+  { ssr: false },
+);
 
 function DelayCountdown({ seconds }: { seconds: number }) {
   const minutes = Math.floor(seconds / 60);
@@ -41,9 +63,7 @@ function MainContent({
   isEmbedded,
   signOut,
 }: {
-  auth: Parameters<
-    Parameters<typeof DiscordActivity>[0]["children"]
-  >[0]["auth"];
+  auth: Auth | null;
   isEmbedded: boolean;
   signOut: () => Promise<void>;
 }) {

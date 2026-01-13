@@ -17,7 +17,7 @@ function playTone(
   frequency: number,
   duration: number,
   type: OscillatorType = "sine",
-  volume: number = 0.15,
+  volume = 0.15,
 ) {
   const ctx = getAudioContext();
 
@@ -47,7 +47,7 @@ function playTone(
 function playSequence(
   notes: { freq: number; duration: number; delay: number }[],
   type: OscillatorType = "sine",
-  volume: number = 0.15,
+  volume = 0.15,
 ) {
   notes.forEach((note) => {
     setTimeout(() => {
