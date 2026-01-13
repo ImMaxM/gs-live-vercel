@@ -147,7 +147,7 @@ function DriverRow({
           damping: 40,
         },
       }}
-      className={`grid ${GRID_TEMPLATE} h-10 content-center items-center hover:bg-white/5`}
+      className={`grid ${GRID_TEMPLATE} h-10 items-center hover:bg-white/5`}
     >
       {/* Position */}
       <div
@@ -177,21 +177,21 @@ function DriverRow({
 
       {/* Gap */}
       <div
-        className={`${COLUMN_WIDTHS.gap} text-primary border-border flex items-center justify-center self-stretch border-l text-sm font-normal`}
+        className={`${COLUMN_WIDTHS.gap} text-primary border-border flex items-center justify-center self-stretch border-l px-3 text-sm font-normal`}
       >
         {driver.gap || "—"}
       </div>
 
       {/* Interval */}
       <div
-        className={`${COLUMN_WIDTHS.interval} text-primary border-border flex items-center justify-center self-stretch border-l text-sm font-normal`}
+        className={`${COLUMN_WIDTHS.interval} text-primary border-border flex items-center justify-center self-stretch border-l px-3 text-sm font-normal`}
       >
         {driver.interval || "—"}
       </div>
 
       {/* Last Lap */}
       <div
-        className={`${COLUMN_WIDTHS.lastLap} border-border flex items-center justify-center self-stretch border-l text-sm font-normal ${
+        className={`${COLUMN_WIDTHS.lastLap} border-border flex items-center justify-center self-stretch border-l px-3 text-sm font-normal ${
           isPersonalBest ? "text-green-500" : "text-primary"
         }`}
       >
@@ -204,7 +204,7 @@ function DriverRow({
 
       {/* Fastest Lap */}
       <div
-        className={`${COLUMN_WIDTHS.fastestLap} border-border flex items-center justify-center self-stretch border-l text-sm font-normal ${
+        className={`${COLUMN_WIDTHS.fastestLap} border-border flex items-center justify-center self-stretch border-l px-3 text-sm font-normal ${
           isOverallFastest ? "text-fuchsia-500" : "text-primary"
         }`}
       >
@@ -217,7 +217,7 @@ function DriverRow({
 
       {/* Avg Speed */}
       <div
-        className={`${COLUMN_WIDTHS.avgSpeed} text-primary border-border flex items-center justify-center self-stretch border-l text-sm font-normal`}
+        className={`${COLUMN_WIDTHS.avgSpeed} text-primary border-border flex items-center justify-center self-stretch border-l px-3 text-sm font-normal`}
       >
         {driver.averageSpeedMph > 0 ? (
           <div className="flex items-baseline gap-1">
@@ -235,14 +235,14 @@ function DriverRow({
 
       {/* Pit */}
       <div
-        className={`${COLUMN_WIDTHS.pit} border-border flex items-center justify-center self-stretch border-l`}
+        className={`${COLUMN_WIDTHS.pit} border-border flex items-center justify-center self-stretch border-l px-3`}
       >
         <PitIndicator inPit={driver.pitStatus === "in_pit"} />
       </div>
 
       {/* Tyres */}
       <div
-        className={`${COLUMN_WIDTHS.tyres} text-primary border-border flex items-center justify-center self-stretch border-l p-2 text-xs font-normal`}
+        className={`${COLUMN_WIDTHS.tyres} text-primary border-border flex items-center justify-center self-stretch border-l px-3 text-xs font-normal`}
       >
         <TyreStrategy driver={driver} />
       </div>
@@ -261,7 +261,7 @@ export function TimingsTable() {
       <div className="min-w-[950px]">
         {/* Skeleton Rows */}
         <div className="flex flex-col">
-          {[...Array(22)].map((_, i) => (
+          {Array.from({ length: 22 }).map((_, i) => (
             <div
               key={i}
               className={`grid ${GRID_TEMPLATE} h-10 items-center border-b border-[#2a2a2a] pl-4`}
@@ -306,7 +306,9 @@ export function TimingsTable() {
         <div className="relative flex-1">
           <div className="flex flex-col">
             {/* Top spacer with lines */}
-            <div className={`grid ${GRID_TEMPLATE} h-2`}>
+            <div
+              className={`grid ${GRID_TEMPLATE} bg-background sticky top-0 z-10 h-2`}
+            >
               <div className={`${COLUMN_WIDTHS.position} h-full`} />
               <div
                 className={`${COLUMN_WIDTHS.driver} border-border h-full border-l`}
@@ -336,48 +338,48 @@ export function TimingsTable() {
 
             {/* Header */}
             <div
-              className={`grid ${GRID_TEMPLATE} bg-background text-header sticky top-0 z-10 h-6 items-center text-center text-[10px] tracking-wider uppercase`}
+              className={`grid ${GRID_TEMPLATE} bg-background text-header sticky top-2 z-10 h-6 items-center text-center text-[10px] tracking-wider uppercase`}
             >
               <div
-                className={`${COLUMN_WIDTHS.position} flex h-full items-center justify-center font-medium`}
+                className={`${COLUMN_WIDTHS.position} bg-background flex h-full items-center justify-center font-medium`}
               />
               <div
-                className={`${COLUMN_WIDTHS.driver} border-border flex h-full items-center justify-center border-l px-3 font-medium`}
+                className={`${COLUMN_WIDTHS.driver} bg-background border-border flex h-full items-center justify-center border-l px-3 font-medium`}
               >
                 Driver
               </div>
               <div
-                className={`${COLUMN_WIDTHS.gap} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.gap} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Gap
               </div>
               <div
-                className={`${COLUMN_WIDTHS.interval} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.interval} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Interval
               </div>
               <div
-                className={`${COLUMN_WIDTHS.lastLap} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.lastLap} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Last Lap
               </div>
               <div
-                className={`${COLUMN_WIDTHS.fastestLap} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.fastestLap} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Fastest Lap
               </div>
               <div
-                className={`${COLUMN_WIDTHS.avgSpeed} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.avgSpeed} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Avg Speed
               </div>
               <div
-                className={`${COLUMN_WIDTHS.pit} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.pit} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Pit
               </div>
               <div
-                className={`${COLUMN_WIDTHS.tyres} border-border flex h-full items-center justify-center border-l font-medium`}
+                className={`${COLUMN_WIDTHS.tyres} bg-background border-border flex h-full items-center justify-center border-l font-medium`}
               >
                 Tyres
               </div>

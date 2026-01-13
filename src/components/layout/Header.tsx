@@ -104,8 +104,8 @@ export function Header({ auth, isEmbedded, signOut }: HeaderProps) {
     : "Wind";
 
   return (
-    <header className="bg-background fixed top-1 right-0 left-0 z-50">
-      <div className="flex h-12 items-center justify-between px-4">
+    <header className="bg-background fixed top-0 right-0 left-0 z-50">
+      <div className="flex h-14 items-center justify-between px-4">
         {/* Left side - Logo and branding */}
         <div className="flex items-center gap-3">
           <Image

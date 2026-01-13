@@ -10,7 +10,7 @@ export function RightPanel() {
       <CrowdEngineer />
 
       {/* Bottom: Race Control */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex max-h-[65vh] flex-1 flex-col overflow-hidden lg:max-h-none">
         <RaceControl />
       </div>
     </div>

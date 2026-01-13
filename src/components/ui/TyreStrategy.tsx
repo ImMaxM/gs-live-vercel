@@ -51,7 +51,7 @@ export function TyreStrategy({ driver }: { driver: DriverTelemetry }) {
             className="object-contain"
           />
         </div>
-        <div className="flex flex-col text-xs leading-none">
+        <div className="flex flex-col pr-4 text-xs leading-none">
           <span className="text-primary font-medium">
             {driver.currentTyre.ageLaps} Laps
           </span>
