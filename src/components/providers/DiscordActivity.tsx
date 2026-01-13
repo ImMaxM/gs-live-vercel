@@ -4,6 +4,14 @@ import { useEffect, useState } from "react";
 import type { CommandResponse } from "@discord/embedded-app-sdk";
 import { TyreLoader } from "../ui/TyreLoader";
 import * as Sentry from "@sentry/nextjs";
+import {
+  discordSdk,
+  isEmbedded as checkIsEmbedded,
+} from "~/lib/discord/client";
+
+// for development, react strict mode causes issues
+let isAuthInProgress = false;
+let cachedAuth: CommandResponse<"authenticate"> | null = null;
 
 export type Auth = CommandResponse<"authenticate">;
 
@@ -57,9 +65,8 @@ export function DiscordActivity({ children }: DiscordActivityProps) {
           setIsLoading(false);
         }, 30000);
 
-        // Dynamic import to avoid SSR issues
-        const discordModule = await import("~/lib/discord/client");
-        const embedded = discordModule.isEmbedded;
+        // Check if we're embedded in Discord
+        const embedded = checkIsEmbedded;
         setIsEmbedded(embedded);
 
         if (!embedded) {
@@ -104,7 +111,24 @@ export function DiscordActivity({ children }: DiscordActivityProps) {
           return;
         }
 
-        const { discordSdk } = discordModule;
+        // Check if we already have cached auth from a previous mount
+        if (cachedAuth) {
+          setAuth(cachedAuth);
+          Sentry.setUser({
+            id: cachedAuth.user.id,
+            username: cachedAuth.user.username,
+          });
+          clearTimeout(timeoutId);
+          setIsLoading(false);
+          return;
+        }
+
+        // Prevent duplicate auth attempts (React Strict Mode / hot reload)
+        if (isAuthInProgress) {
+          clearTimeout(timeoutId);
+          return;
+        }
+        isAuthInProgress = true;
 
         // Wait for Discord SDK to be ready
         await discordSdk.ready();
@@ -149,6 +173,8 @@ export function DiscordActivity({ children }: DiscordActivityProps) {
           throw new Error("Authentication failed");
         }
 
+        // Cache the auth result for subsequent mounts
+        cachedAuth = authResult;
         setAuth(authResult);
 
         // Set Sentry user context

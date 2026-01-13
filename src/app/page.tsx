@@ -6,17 +6,13 @@ import { StatusBar } from "~/components/ui/StatusBar";
 import { SoundNotifications } from "~/components/SoundNotifications";
 import { useF1Live } from "~/components/providers/F1LiveProvider";
 import { useEffect, useState } from "react";
-import type { Auth } from "~/components/providers/DiscordActivity";
+import {
+  DiscordActivity,
+  type Auth,
+} from "~/components/providers/DiscordActivity";
+import { DiscordActivityStatus } from "~/components/DiscordActivityStatus";
 
 // Dynamic imports for heavy components - loads on-demand
-const DiscordActivity = dynamic(
-  () =>
-    import("~/components/providers/DiscordActivity").then(
-      (mod) => mod.DiscordActivity,
-    ),
-  { ssr: false },
-);
-
 const TimingsTable = dynamic(
   () => import("~/components/ui/TimingsTable").then((mod) => mod.TimingsTable),
   { ssr: false },
@@ -72,6 +68,7 @@ function MainContent({
   return (
     <div className="bg-background min-h-screen">
       <SoundNotifications />
+      <DiscordActivityStatus isEmbedded={isEmbedded} />
       <Header auth={auth} isEmbedded={isEmbedded} signOut={signOut} />
       <StatusBar />
 
