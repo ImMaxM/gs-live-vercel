@@ -8,9 +8,46 @@ import { SettingsProvider } from "~/components/providers/SettingsProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://live.gridscout.xyz"),
   title: "GridScout Live",
-  description: "Real-time F1 live timing dashboard",
+  description:
+    "Real-time F1 live timing dashboard. Experience Formula 1 race data with live lap times, driver positions and tyre stints right within your browser.",
+  keywords: [
+    "F1",
+    "Formula 1",
+    "live timing",
+    "race timing",
+    "lap times",
+    "Discord",
+    "motorsport",
+    "racing",
+    "gridscout",
+  ],
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://live.gridscout.xyz",
+    siteName: "GridScout Live",
+    title: "GridScout Live",
+    description:
+      "Real-time F1 live ti ming dashboard. Experience Formula 1 race data with live lap times, driver positions and tyre stints right within your browser",
+    images: [
+      {
+        url: "/assets/hero.png",
+        width: 1200,
+        height: 630,
+        alt: "GridScout Live - Real-time F1 live timing dashboard",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GridScout Live",
+    description:
+      "Real-time F1 live timing dashboard. Experience Formula 1 race data with live lap times, driver positions and tyre stints right within your browser",
+    images: ["/assets/hero.png"],
+  },
 };
 
 const saira = Saira({
