@@ -41,8 +41,8 @@ export function transformToPayload(
     event: {
       name: mssData?.event.name ?? "Unknown Event",
       country: {
-        name: "United Kingdom", // MSS doesn't provide country directly
-        alpha3: "GBR",
+        name: "United Arab Emirates", // MSS doesn't provide country directly
+        alpha3: "ARE",
       },
     },
     weather: {
