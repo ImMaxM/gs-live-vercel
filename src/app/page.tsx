@@ -63,7 +63,9 @@ function MainContent({
   isEmbedded: boolean;
   signOut: () => Promise<void>;
 }) {
-  const { delayRemaining } = useF1Live();
+  const { delayRemaining, connectionStatus } = useF1Live();
+  const isDisconnected =
+    connectionStatus === "reconnecting" || connectionStatus === "disconnected";
 
   return (
     <div className="bg-background min-h-screen">
@@ -73,8 +75,24 @@ function MainContent({
       <StatusBar />
 
       <main className="flex h-screen flex-col overflow-y-auto pt-20 lg:flex-row lg:overflow-hidden">
-        <div className="w-full min-w-0 flex-1 lg:w-[75%] lg:overflow-x-hidden lg:overflow-y-auto">
-          <div className="w-full overflow-x-auto">
+        <div className="relative w-full min-w-0 flex-1 lg:w-[75%] lg:overflow-x-hidden lg:overflow-y-auto">
+          {/* Connection lost overlay */}
+          {isDisconnected && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/30 backdrop-blur-[2px]">
+              <div className="text-center">
+                <div className="text-lg font-semibold text-white">
+                  Connection lost
+                </div>
+                <div className="text-secondary mt-4 flex items-center justify-center gap-2 text-sm font-medium">
+                  Reconnecting...
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div
+            className={`w-full overflow-x-auto transition-opacity duration-300 ${isDisconnected ? "opacity-40" : ""}`}
+          >
             {delayRemaining > 0 ? (
               <DelayCountdown seconds={delayRemaining} />
             ) : (

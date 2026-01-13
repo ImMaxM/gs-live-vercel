@@ -74,8 +74,7 @@ export function F1LiveProvider({ children }: F1LiveProviderProps) {
     useState<ConnectionStatus>("disconnected");
   const [delayRemaining, setDelayRemaining] = useState(0);
   const reconnectAttempts = useRef(0);
-  const maxReconnectAttempts = 10;
-  const baseDelay = 1000;
+  const baseDelay = 1000; // Base delay for exponential backoff
 
   // Track pending delayed payloads
   const pendingTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -196,19 +195,18 @@ export function F1LiveProvider({ children }: F1LiveProviderProps) {
         eventSource?.close();
         eventSource = null;
 
-        if (reconnectAttempts.current >= maxReconnectAttempts) {
-          console.error("Max reconnect attempts reached.");
-          setConnectionStatus("disconnected");
-          return;
-        }
-
         setConnectionStatus("reconnecting");
         reconnectAttempts.current++;
+
+        // Exponential backoff: 1s, 2s, 4s, 8s, 16s, 30s (max)
         const delay = Math.min(
           baseDelay * Math.pow(2, reconnectAttempts.current - 1),
           30000,
         );
 
+        console.log(
+          `Reconnecting in ${delay / 1000}s (attempt ${reconnectAttempts.current})...`,
+        );
         reconnectTimer = setTimeout(connect, delay);
       };
     };
