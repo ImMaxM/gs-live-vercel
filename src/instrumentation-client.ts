@@ -12,6 +12,8 @@ Sentry.init({
     Sentry.replayIntegration({
       maskAllText: false,
       blockAllMedia: false,
+      minReplayDuration: 0,
+      stickySession: true,
     }),
   ],
 
@@ -31,6 +33,8 @@ Sentry.init({
   // Enable sending user PII (Personally Identifiable Information)
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
   sendDefaultPii: true,
+
+  debug: true
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
